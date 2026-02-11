@@ -151,7 +151,7 @@ EMCC_FLAGS="-Oz \
 --pre-js src/jsfetch_dependencies.js"
 
 # Includes and Libs from build/opt/ffmpeg
-INCLUDES="-Ibuild/opt/ffmpeg/include -Iffmpeg"
+INCLUDES="-Isrc/compat -Ibuild/opt/ffmpeg/include -Iffmpeg"
 LIB_DIR="-Lbuild/opt/ffmpeg/lib"
 LIBS="-lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lmp3lame -lvpx -lm"
 
