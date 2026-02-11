@@ -116,7 +116,7 @@ cd ..
 
 # FFmpeg Configuration
 # Update flags to include dependency paths
-FLAGS="$FLAGS --extra-cflags=-I$(pwd)/build/opt/ffmpeg/include --extra-ldflags=-L$(pwd)/build/opt/ffmpeg/lib"
+FLAGS="$FLAGS --extra-cflags='-I$(pwd)/build/opt/ffmpeg/include' --extra-ldflags='-L$(pwd)/build/opt/ffmpeg/lib -s INITIAL_MEMORY=67108864 -s ALLOW_MEMORY_GROWTH=1'"
 
 cd ffmpeg
 
