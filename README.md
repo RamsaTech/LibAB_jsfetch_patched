@@ -9,7 +9,7 @@ LibAB_jsfetch_patched/
 ├── .github/
 │   └── workflows/
 │       └── build.yml       # GitHub Actions CI workflow
-├── ffmpeg/                 # FFmpeg 6.0 source code (patched)
+├── ffmpeg/                 # FFmpeg 7.1 source code (patched)
 ├── patches/
 │   └── ffmpeg/
 │       └── 07-jsfetch-protocol.diff  # jsfetch protocol patch
@@ -47,7 +47,7 @@ To build locally, you need [Emscripten SDK](https://emscripten.org/docs/getting_
    - Link the final `libav-*.mjs` and `.wasm` files.
 
 ## Modifications
-- **FFmpeg**: Version 6.0, patched with `jsfetch` protocol.
+- **FFmpeg**: Version 7.1, patched with `jsfetch` protocol.
 - **Emscripten**: Built with version 3.1.71.
 - **Flags**: Optimized for size (`-Oz`), with H.264, AAC, MP3, HLS support enabled.
 - **Custom JS**: Includes `jsfetch` implementation for handling HTTP requests and HLS segments via proper protocol redirection.
