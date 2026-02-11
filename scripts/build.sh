@@ -11,6 +11,12 @@ fi
 echo "Building with $CORES cores..."
 
 # FFmpeg Configuration
+# Note: --enable-pthreads is used so FFmpeg's headers include <pthread.h>
+# from Emscripten's sysroot (which provides single-threaded stubs).
+# We do NOT pass -s USE_PTHREADS=1 to Emscripten, so no SharedArrayBuffer
+# is required. The stubs are no-ops at runtime.
+# --disable-programs prevents FFmpeg from linking its own binaries
+# (we handle that in our custom linking step below).
 FLAGS="--prefix=/opt/ffmpeg \
 --target-os=none \
 --enable-cross-compile \
@@ -23,14 +29,13 @@ FLAGS="--prefix=/opt/ffmpeg \
 --disable-stripping \
 --disable-programs \
 --disable-ffplay \
---disable-ffprobe \
 --disable-network \
 --disable-iconv \
 --disable-xlib \
 --disable-sdl2 \
 --disable-zlib \
 --disable-everything \
---disable-pthreads \
+--enable-pthreads \
 --arch=emscripten \
 --optflags=-Oz \
 --enable-protocol=data \
@@ -128,8 +133,7 @@ cd ..
 echo "Linking LibAV..."
 
 # Emscripten flags
-# -include forces the pthread shim header before all source files,
-# providing stub types/functions for ffmpeg_sched.c without real pthreads.
+# No -s USE_PTHREADS=1 — we rely on Emscripten's single-threaded pthread stubs.
 EMCC_FLAGS="-Oz \
 -s ASYNCIFY=1 \
 -s MODULARIZE=1 \
@@ -143,8 +147,6 @@ EMCC_FLAGS="-Oz \
 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','FS','WORKERFS'] \
 -lworkerfs.js \
 -Wno-pointer-sign \
--Wno-implicit-function-declaration \
--include src/pthread_shim.h \
 --js-library src/library_jsfetch.js \
 --pre-js src/jsfetch_dependencies.js"
 
@@ -153,9 +155,7 @@ INCLUDES="-Ibuild/opt/ffmpeg/include -Iffmpeg"
 LIB_DIR="-Lbuild/opt/ffmpeg/lib"
 LIBS="-lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lmp3lame -lvpx -lm"
 
-
-
-# I will use `emcc` to link.
+# Compile fftools sources and link with libraries.
 emcc $EMCC_FLAGS \
   $INCLUDES $LIB_DIR \
   ffmpeg/fftools/ffmpeg.c \
@@ -175,4 +175,3 @@ emcc $EMCC_FLAGS \
   ffmpeg/fftools/opt_common.c \
   $LIBS \
   -o libav-6.5.7.1-h264-aac-mp3.wasm.mjs
-
