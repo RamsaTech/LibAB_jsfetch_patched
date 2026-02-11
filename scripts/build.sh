@@ -30,7 +30,7 @@ FLAGS="--prefix=/opt/ffmpeg \
 --disable-sdl2 \
 --disable-zlib \
 --disable-everything \
---disable-pthreads \
+--enable-pthreads \
 --arch=emscripten \
 --optflags=-Oz \
 --enable-protocol=data \
@@ -75,6 +75,10 @@ FLAGS="--prefix=/opt/ffmpeg \
 # Clean build dir?
 # rm -rf build
 mkdir -p build
+
+# Export flags for dependencies to pick up pthreads
+export CFLAGS="-s USE_PTHREADS=1"
+export LDFLAGS="-s USE_PTHREADS=1"
 
 # Build Dependencies
 mkdir -p deps
@@ -132,6 +136,8 @@ echo "Linking LibAV..."
 # Emscripten flags
 EMCC_FLAGS="-Oz \
 -s ASYNCIFY=1 \
+-s USE_PTHREADS=1 \
+-s PTHREAD_POOL_SIZE=8 \
 -s MODULARIZE=1 \
 -s EXPORT_NAME=\"LibAVFactory\" \
 -s INITIAL_MEMORY=67108864 \
