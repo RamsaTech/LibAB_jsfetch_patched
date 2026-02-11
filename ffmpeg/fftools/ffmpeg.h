@@ -23,14 +23,7 @@
 
 #include <stdatomic.h>
 #include <stdint.h>
-#if !HAVE_THREADS
-typedef int pthread_mutex_t;
-#define pthread_mutex_init(a, b) 0
-#define pthread_mutex_lock(a) 0
-#define pthread_mutex_unlock(a) 0
-#define pthread_mutex_destroy(a) 0
-#endif
-
+#include <pthread.h>
 #include <stdio.h>
 #include <signal.h>
 
