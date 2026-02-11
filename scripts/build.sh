@@ -30,7 +30,7 @@ FLAGS="--prefix=/opt/ffmpeg \
 --disable-sdl2 \
 --disable-zlib \
 --disable-everything \
---enable-pthreads \
+--disable-pthreads \
 --arch=emscripten \
 --optflags=-Oz \
 --enable-protocol=data \
@@ -68,17 +68,11 @@ FLAGS="--prefix=/opt/ffmpeg \
 --enable-bsf=vp9_metadata \
 --enable-bsf=opus_metadata \
 --enable-decoder=libvpx_vp9 \
---enable-ffmpeg \
---enable-ffprobe \
 --enable-demuxer=ogg"
 
 # Clean build dir?
 # rm -rf build
 mkdir -p build
-
-# Export flags for dependencies to pick up pthreads
-export CFLAGS="-s USE_PTHREADS=1"
-export LDFLAGS="-s USE_PTHREADS=1"
 
 # Build Dependencies
 mkdir -p deps
@@ -116,7 +110,7 @@ cd ..
 
 # FFmpeg Configuration
 # Update flags to include dependency paths
-FLAGS="$FLAGS --extra-cflags='-I$(pwd)/build/opt/ffmpeg/include' --extra-ldflags='-L$(pwd)/build/opt/ffmpeg/lib -s INITIAL_MEMORY=67108864 -s ALLOW_MEMORY_GROWTH=1'"
+FLAGS="$FLAGS --extra-cflags=-I$(pwd)/build/opt/ffmpeg/include --extra-ldflags=-L$(pwd)/build/opt/ffmpeg/lib"
 
 cd ffmpeg
 
@@ -134,10 +128,10 @@ cd ..
 echo "Linking LibAV..."
 
 # Emscripten flags
+# -include forces the pthread shim header before all source files,
+# providing stub types/functions for ffmpeg_sched.c without real pthreads.
 EMCC_FLAGS="-Oz \
 -s ASYNCIFY=1 \
--s USE_PTHREADS=1 \
--s PTHREAD_POOL_SIZE=8 \
 -s MODULARIZE=1 \
 -s EXPORT_NAME=\"LibAVFactory\" \
 -s INITIAL_MEMORY=67108864 \
@@ -149,6 +143,8 @@ EMCC_FLAGS="-Oz \
 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','FS','WORKERFS'] \
 -lworkerfs.js \
 -Wno-pointer-sign \
+-Wno-implicit-function-declaration \
+-include src/pthread_shim.h \
 --js-library src/library_jsfetch.js \
 --pre-js src/jsfetch_dependencies.js"
 
