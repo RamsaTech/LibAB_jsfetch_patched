@@ -142,6 +142,7 @@ EMCC_FLAGS="-Oz \
 -s EXPORTED_FUNCTIONS=['_main','_free','_malloc'] \
 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','FS','WORKERFS'] \
 -lworkerfs.js \
+-Wno-pointer-sign \
 --js-library src/library_jsfetch.js \
 --pre-js src/jsfetch_dependencies.js"
 
