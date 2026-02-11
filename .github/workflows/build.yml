@@ -1,0 +1,34 @@
+name: Build LibAV
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Emscripten
+      uses: mymindstorm/setup-emsdk@v14
+      with:
+        version: 3.1.71
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nasm build-essential pkg-config
+
+    - name: Build
+      run: ./scripts/build.sh
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: libav-build
+        path: |
+          libav-6.5.7.1-h264-aac-mp3.wasm.mjs
+          libav-6.5.7.1-h264-aac-mp3.wasm.wasm
