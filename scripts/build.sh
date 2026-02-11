@@ -161,6 +161,14 @@ emcc $EMCC_FLAGS \
   ffmpeg/fftools/ffmpeg_filter.c \
   ffmpeg/fftools/ffmpeg_mux_init.c \
   ffmpeg/fftools/ffmpeg_demux.c \
+  ffmpeg/fftools/ffmpeg_sched.c \
+  ffmpeg/fftools/ffmpeg_hw.c \
+  ffmpeg/fftools/ffmpeg_dec.c \
+  ffmpeg/fftools/ffmpeg_enc.c \
+  ffmpeg/fftools/ffmpeg_mux.c \
+  ffmpeg/fftools/sync_queue.c \
+  ffmpeg/fftools/thread_queue.c \
+  ffmpeg/fftools/objpool.c \
   ffmpeg/fftools/cmdutils.c \
   ffmpeg/fftools/opt_common.c \
   $LIBS \
