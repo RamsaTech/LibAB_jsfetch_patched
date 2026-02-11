@@ -691,6 +691,10 @@ OBJS-$(CONFIG_UDP_PROTOCOL)              += udp.o ip.o
 OBJS-$(CONFIG_UDPLITE_PROTOCOL)          += udp.o ip.o
 OBJS-$(CONFIG_UNIX_PROTOCOL)             += unix.o
 
+# libav.js
+OBJS-$(CONFIG_JSFETCH_PROTOCOL)          += jsfetch.o
+# /libav.js
+
 # external library protocols
 OBJS-$(CONFIG_LIBAMQP_PROTOCOL)          += libamqp.o urldecode.o
 OBJS-$(CONFIG_LIBRIST_PROTOCOL)          += librist.o

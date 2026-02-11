@@ -76,6 +76,10 @@ extern const URLProtocol ff_libzmq_protocol;
 extern const URLProtocol ff_ipfs_gateway_protocol;
 extern const URLProtocol ff_ipns_gateway_protocol;
 
+/* libav.js */
+extern const URLProtocol ff_jsfetch_protocol;
+/* /libav.js */
+
 #include "libavformat/protocol_list.c"
 
 const AVClass *ff_urlcontext_child_class_iterate(void **iter)
